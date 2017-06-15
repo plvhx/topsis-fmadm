@@ -1,0 +1,22 @@
+{
+    "name": "gandung/topsis-fmadm",
+    "description": "The TOPSIS FMADM (Fuzzy Multiple Attribute Decision Making) Algorithm",
+    "type": "library",
+    "require": {
+        "illuminate/contracts": "^5.4",
+        "illuminate/support": "^5.4"
+    },
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Paulus Gandung Prakosa",
+            "email": "rvn.plvhx@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "FMADM\\Topsis\\": "src/"
+        }
+    }
+}

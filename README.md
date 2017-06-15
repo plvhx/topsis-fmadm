@@ -7,6 +7,8 @@
 ```php
 <?php
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
+
 $data = [
 	[0.5290, 0.7742, 1, 1, 0.7665],
 	[0.4110, 0.1275, 1, 1, 0.7415],
@@ -25,6 +27,8 @@ $data = [
 ```php
 <?php
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
+
 $data = [
 	['IIIA', 7742, 56, 26, 15.33],
 	['IIC', 1275, 53, 25, 14.83],
@@ -41,8 +45,7 @@ $data = [
 
 ## To get ranking result (preference value) from fixed data
 ```php
-<?php
-
+[...]
 $handler = new \FMADM\Topsis\Topsis($data);
 $handler->setWeight([1, 0.5, 0.75, 0.5, 1]);
 $handler->normalizeCriterionMatrix();
@@ -53,8 +56,7 @@ print_r($pref);
 
 ## To get ranking result (preference value) from fuzzified data
 ```php
-<?php
-
+[...]
 $processor = (new \FMADM\Topsis\FuzzyProcessor)
 	->withCriterion('golongan', ['IA', 'IB', 'IC', 'ID', 'IIA', 'IIB', 'IIC', 'IID', 'IIIA', 'IIIB', 'IIIC', 'IIID', 'IVA', 'IVB', 'IVC', 'IVD', 'IVE'])
 	->withCriterion('lama-mengajar', ['lower-bound' => 0, 'upper-bound' => 10000])

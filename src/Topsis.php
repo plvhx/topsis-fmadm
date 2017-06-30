@@ -17,23 +17,46 @@ class Topsis
 	/**
 	 * @var array
 	 */
+	private $debug = [];
+
+	/**
+	 * @var array
+	 */
 	private $countWorkingAlternative;
 
-	public function __construct($data)
+	/**
+	 * @var bool
+	 */
+	private $isDebugMode;
+
+	public function __construct($data, $needDebug = false)
 	{
 		$this->data = $data;
+		$this->isDebugMode = $needDebug;
 		$this->countWorkingAlternative = $this->measureWorkingAlternative();
+
+		if ($this->isDebugMode) {
+			$this->debug['working_rank_per_alternative'] = $this->countWorkingAlternative;
+		}
 	}
 
 	public function needsFuzzifiedData(Fuzzy $fuzzy)
 	{
 		$this->data = $fuzzy->normalizeCriterionData($this->data);
 		$this->countWorkingAlternative = $this->measureWorkingAlternative();
+
+		if ($this->isDebugMode) {
+			$this->debug['working_rank_per_alternative'] = $this->countWorkingAlternative;
+		}
 	}
 
 	public function setWeight($weight)
 	{
 		$this->weight = $weight;
+
+		if ($this->isDebugMode) {
+			$this->debug['weight'] = $this->weight;
+		}
 	}
 
 	protected function measureWorkingAlternative()
@@ -73,6 +96,10 @@ class Topsis
 			}
 		}
 
+		if ($this->isDebugMode) {
+			$this->debug['positive_ideal_solution'] = $max;
+		}
+
 		return $max;
 	}
 
@@ -86,6 +113,10 @@ class Topsis
 					? ($min[$cKey] < $cValue ? $min[$cKey] : $cValue)
 					: $cValue);
 			}
+		}
+
+		if ($this->isDebugMode) {
+			$this->debug['negative_ideal_solution'] = $min;
 		}
 
 		return $min;
@@ -106,6 +137,10 @@ class Topsis
 			$positiveDistance[$mKey] = sqrt($positiveDistance[$mKey]);
 		}
 
+		if ($this->isDebugMode) {
+			$this->debug['positive_distance'] = $positiveDistance;
+		}
+
 		return $positiveDistance;
 	}
 
@@ -124,10 +159,14 @@ class Topsis
 			$negativeDistance[$mKey] = sqrt($negativeDistance[$mKey]);
 		}
 
+		if ($this->isDebugMode) {
+			$this->debug['negative_distance'] = $negativeDistance;
+		}
+
 		return $negativeDistance;
 	}
 
-	public function getPreferenceValuePerAlternative()
+	public function getPreferenceValuePerAlternative($sorted = false)
 	{
 		$positive = $this->getPositiveDistancePerAlternative();
 		$negative = $this->getNegativeDistancePerAlternative();
@@ -137,6 +176,19 @@ class Topsis
 			$pref[$key] = ($negative[$key] / ($negative[$key] + $value));
 		}
 
+		if ($sorted) {
+			sort($pref);
+		}
+
+		if ($this->isDebugMode) {
+			$this->debug['preference_value'] = $pref;
+		}
+
 		return $pref;
+	}
+
+	public function getDebug()
+	{
+		return $this->debug;
 	}
 }

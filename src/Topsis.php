@@ -36,6 +36,7 @@ class Topsis
 		$this->countWorkingAlternative = $this->measureWorkingAlternative();
 
 		if ($this->isDebugMode) {
+			$this->debug['fuzzified'] = "false";
 			$this->debug['working_rank_per_alternative'] = $this->countWorkingAlternative;
 		}
 	}
@@ -46,6 +47,7 @@ class Topsis
 		$this->countWorkingAlternative = $this->measureWorkingAlternative();
 
 		if ($this->isDebugMode) {
+			$this->debug['fuzzified'] = "true";
 			$this->debug['working_rank_per_alternative'] = $this->countWorkingAlternative;
 		}
 	}
@@ -69,6 +71,10 @@ class Topsis
 					? $count[$cKey] + pow($cValue, 2)
 					: pow($cValue, 2));
 			}
+		}
+
+		if ($this->isDebugMode) {
+			$this->debug['normalized_criterion_matrix'] = $this->data;
 		}
 
 		return $count;
